@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meltaway — Small-batch ice cream</title>
+<meta name="description" content="Meltaway is a small-batch ice cream shop. Pick a flavor, read our story, and order a scoop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFC9D9; --scoop:#FF6F9C; --ink:#3B1F1A; --card:#FFF6EC; --pop:#5B4BDB;
+  --display:'Bagel Fat One','Arial Rounded MT Bold',system-ui,sans-serif;
+  --body:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.6;transition:background .6s}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--pop);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* nav */
+header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);background:color-mix(in srgb,var(--bg) 80%,transparent)}
+nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--display);font-size:1.6rem;text-decoration:none}
+nav ul{display:flex;gap:28px;list-style:none;padding:0}
+nav ul a{text-decoration:none;font-weight:500}
+nav ul a:hover{text-decoration:underline;text-underline-offset:5px}
+.btn{display:inline-block;background:var(--ink);color:var(--card);padding:14px 28px;border-radius:999px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:inherit;font-weight:700;transition:transform .2s}
+.btn:hover{transform:translateY(-3px) rotate(-1deg)}
+.btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:32px;min-height:calc(100vh - 68px);padding:32px 0 56px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(3.2rem,8.5vw,7rem);line-height:.95;letter-spacing:-.02em}
+.hero p{max-width:44ch;font-size:1.15rem;margin:24px 0 32px}
+.hero .actions{display:flex;gap:14px;flex-wrap:wrap}
+.cone-stage{position:relative;display:grid;place-items:center}
+.cone-stage svg{width:min(100%,380px);height:auto;filter:drop-shadow(0 24px 24px rgba(59,31,26,.18));animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-14px) rotate(2deg)}}
+.scoop-fill{fill:var(--scoop);transition:fill .5s}
+.flavor-name{position:absolute;bottom:2%;background:var(--card);padding:8px 18px;border-radius:999px;font-weight:700;box-shadow:0 6px 0 var(--ink)}
+
+/* picker */
+section{padding:88px 0}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;margin-bottom:12px}
+.lede{max-width:52ch;margin-bottom:40px;font-size:1.1rem}
+.flavors{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px}
+.flavor{background:var(--card);border:3px solid var(--ink);border-radius:28px;padding:22px;text-align:left;cursor:pointer;font:inherit;color:inherit;transition:transform .2s,box-shadow .2s}
+.flavor:hover{transform:translateY(-4px)}
+.flavor[aria-pressed="true"]{box-shadow:6px 6px 0 var(--ink);transform:translate(-3px,-3px)}
+.dot{display:block;width:64px;height:64px;border-radius:50%;margin-bottom:16px;border:3px solid var(--ink)}
+.flavor b{font-family:var(--display);font-weight:400;font-size:1.35rem;display:block}
+.flavor span.d{font-size:.95rem}
+
+/* story */
+.story{background:var(--ink);color:var(--card);border-radius:48px 48px 0 0}
+.story .grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.story p+p{margin-top:16px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.stat{background:var(--card);color:var(--ink);border-radius:24px;padding:26px}
+.stat:nth-child(2){transform:rotate(2deg);background:#BFE3A8}
+.stat:nth-child(3){transform:rotate(-2deg);background:#FFE27A}
+.stat strong{font-family:var(--display);font-weight:400;font-size:2.6rem;display:block;line-height:1}
+
+/* visit */
+.visit{background:var(--ink);color:var(--card);padding-top:0}
+.order{background:var(--card);color:var(--ink);border-radius:36px;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+form{display:grid;gap:12px}
+input,select{font:inherit;padding:14px 18px;border-radius:16px;border:2px solid var(--ink);background:#fff;color:var(--ink)}
+.msg{min-height:1.5em;font-weight:700}
+footer{background:var(--ink);color:var(--card);padding:32px 0 48px;font-size:.9rem;opacity:.9}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+@media(max-width:820px){
+  .hero,.story .grid,.order{grid-template-columns:1fr}
+  .hero{text-align:center;min-height:auto}
+  .hero p{margin-inline:auto}
+  .hero .actions{justify-content:center}
+  nav ul{display:none}
+  .order{padding:28px}
+}
+/* polish */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+h1{text-shadow:5px 5px 0 var(--card)}
+.hero{position:relative}
+.blob{position:absolute;border-radius:50%;z-index:0;transition:background .6s}
+.b1{width:340px;height:340px;background:var(--scoop);opacity:.35;top:4%;left:8%;animation:drift 9s ease-in-out infinite}
+.b2{width:160px;height:160px;background:var(--card);opacity:.8;bottom:8%;right:2%;animation:drift 7s ease-in-out infinite reverse}
+.cone-stage svg,.flavor-name{position:relative;z-index:1}
+.flavor-name{position:absolute}
+@keyframes drift{50%{transform:translate(18px,-22px) scale(1.06)}}
+.spark{position:absolute;z-index:2;font-size:2rem;animation:twinkle 2.6s ease-in-out infinite}
+.s1{top:8%;right:12%}.s2{top:42%;left:2%;animation-delay:.8s}.s3{bottom:18%;right:6%;animation-delay:1.5s}
+@keyframes twinkle{50%{transform:scale(1.4) rotate(20deg);opacity:.5}}
+.btn{box-shadow:0 6px 0 rgba(59,31,26,.35)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(59,31,26,.35)}
+.btn.alt{box-shadow:inset 0 0 0 2px var(--ink)}
+
+.marquee{background:var(--ink);color:var(--card);overflow:hidden;white-space:nowrap;padding:16px 0;transform:rotate(-1.5deg);margin:0 -20px;border-block:4px solid var(--card)}
+.marquee div{display:inline-block;animation:slide 28s linear infinite;font-family:var(--display);font-size:1.5rem}
+.marquee span{margin:0 22px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+.flavor{position:relative;overflow:hidden}
+.flavor::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--c);opacity:.25;transition:transform .4s}
+.flavor:hover::after{transform:scale(1.5)}
+.flavor:nth-child(odd):hover{transform:translateY(-6px) rotate(-1.5deg)}
+.flavor:nth-child(even):hover{transform:translateY(-6px) rotate(1.5deg)}
+.dot{box-shadow:inset -8px -8px 0 rgba(0,0,0,.12),inset 6px 6px 0 rgba(255,255,255,.35)}
+
+.reviews{padding-top:40px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.review{background:var(--card);border:3px solid var(--ink);border-radius:28px;padding:28px;box-shadow:8px 8px 0 var(--ink)}
+.review:nth-child(2){background:#FFE27A;transform:translateY(16px)}
+.review:nth-child(3){background:#BFE3A8}
+.stars{letter-spacing:4px;font-size:1.2rem;margin-bottom:10px}
+.review cite{display:block;margin-top:14px;font-weight:700;font-style:normal}
+
+.wave{display:block;width:100%;height:60px;margin-bottom:-1px}
+.wave path{fill:var(--ink)}
+.story{border-radius:0}
+.stat{box-shadow:6px 6px 0 rgba(255,246,236,.25)}
+.order{box-shadow:10px 10px 0 var(--bg);transition:box-shadow .6s}
+
+footer{border-top:2px dashed rgba(255,246,236,.25)}
+.credit strong{font-family:var(--display);font-weight:400;font-size:1.15rem;color:var(--bg);transition:color .6s}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap" aria-label="Main">
+    <a class="logo" href="#top">Meltaway</a>
+    <ul>
+      <li><a href="#flavors">Flavors</a></li>
+      <li><a href="#story">Our story</a></li>
+      <li><a href="#order">Order</a></li>
+    </ul>
+    <a class="btn" href="#order">Order a scoop</a>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1>Cold, sweet, and gone in a minute.</h1>
+      <p>Small-batch ice cream made every morning with real fruit, fresh milk, and nothing we can't pronounce. Pick a flavor and watch the cone change.</p>
+      <div class="actions">
+        <a class="btn" href="#flavors">Pick a flavor</a>
+        <a class="btn alt" href="#story">Read our story</a>
+      </div>
+    </div>
+    <div class="cone-stage">
+      <span class="blob b1"></span><span class="blob b2"></span>
+      <span class="spark s1" aria-hidden="true">✦</span><span class="spark s2" aria-hidden="true">✧</span><span class="spark s3" aria-hidden="true">✦</span>
+      <svg viewBox="0 0 300 470" role="img" aria-label="Ice cream cone with a scoop in the selected flavor">
+        <defs>
+          <pattern id="waffle" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="22" height="22" fill="#F2B866"/>
+            <path d="M0 0H22M0 0V22" stroke="#C98A3E" stroke-width="3"/>
+          </pattern>
+        </defs>
+        <polygon points="62,230 238,230 150,452" fill="url(#waffle)" stroke="#3B1F1A" stroke-width="5" stroke-linejoin="round"/>
+        <path class="scoop-fill" stroke="#3B1F1A" stroke-width="5" stroke-linejoin="round"
+          d="M48 226 C28 120 90 40 150 40 C210 40 272 120 252 226 C240 250 222 232 212 250 C204 266 190 240 176 250 C164 258 150 238 138 250 C124 262 112 236 96 248 C82 258 62 246 48 226Z"/>
+        <path d="M92 110 C100 80 124 66 146 64" stroke="#fff" stroke-width="10" stroke-linecap="round" fill="none" opacity=".45"/>
+        <g stroke="#3B1F1A" stroke-width="4" stroke-linecap="round">
+          <line x1="110" y1="140" x2="124" y2="148" stroke="#5B4BDB"/>
+          <line x1="170" y1="100" x2="184" y2="94" stroke="#FFE27A"/>
+          <line x1="196" y1="164" x2="208" y2="174" stroke="#BFE3A8"/>
+          <line x1="140" y1="190" x2="130" y2="202" stroke="#FFF6EC"/>
+          <line x1="226" y1="128" x2="236" y2="140" stroke="#5B4BDB"/>
+        </g>
+      </svg>
+      <div class="flavor-name" id="current" aria-live="polite">Strawberry Cloud</div>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true"><div>
+    <span>Strawberry Cloud</span><span>✦</span><span>Pistachio Dream</span><span>✦</span><span>Blueberry Swirl</span><span>✦</span><span>Mango Sunrise</span><span>✦</span><span>Dark Cocoa</span><span>✦</span>
+    <span>Strawberry Cloud</span><span>✦</span><span>Pistachio Dream</span><span>✦</span><span>Blueberry Swirl</span><span>✦</span><span>Mango Sunrise</span><span>✦</span><span>Dark Cocoa</span><span>✦</span>
+  </div></div>
+
+  <section id="flavors">
+    <div class="wrap">
+      <h2>Five flavors on the board today</h2>
+      <p class="lede">Tap one. The cone and the whole page take on its color.</p>
+      <div class="flavors" id="flavorGrid"></div>
+    </div>
+  </section>
+
+  <section class="reviews">
+    <div class="wrap">
+      <h2>What people say</h2>
+      <p class="lede">Real words from the line outside our door.</p>
+      <div class="rgrid">
+        <blockquote class="review"><div class="stars" aria-label="5 stars">★★★★★</div>The mango scoop tasted like biting into a ripe summer. I came back the next day.<cite>Ayesha K.</cite></blockquote>
+        <blockquote class="review"><div class="stars" aria-label="5 stars">★★★★★</div>Dark Cocoa is rich without being heavy. Best scoop I've had in the city.<cite>Daniyal R.</cite></blockquote>
+        <blockquote class="review"><div class="stars" aria-label="5 stars">★★★★★</div>My kids picked Strawberry Cloud and fought over the last bite. Worth it.<cite>Sana M.</cite></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V30C100 0 200 0 300 30S500 60 600 30 800 0 900 30s200 30 300 0V60Z"/></svg>
+
+  <section class="story" id="story">
+    <div class="wrap grid">
+      <div>
+        <h2>It started with a broken freezer.</h2>
+        <p>In 2019, our founder's freezer died in a heatwave, and a bucket of strawberries turned into the best soft-serve she'd ever tasted. She spent a year turning that accident into a recipe.</p>
+        <p>Today we churn small batches every morning in our shop. When a flavor sells out, it's gone until tomorrow.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>5</strong>flavors, rotated weekly</div>
+        <div class="stat"><strong>6am</strong>first batch churned</div>
+        <div class="stat"><strong>0</strong>artificial colors</div>
+        <div class="stat"><strong>12k</strong>scoops served last summer</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="order">
+    <div class="wrap">
+      <div class="order">
+        <div>
+          <h2>Reserve your scoop</h2>
+          <p>Tell us what you want and when you're coming. We'll hold it at the counter for 30 minutes.</p>
+        </div>
+        <form id="orderForm">
+          <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
+          <select id="flavorSelect" name="flavor" aria-label="Flavor"></select>
+          <select name="size" aria-label="Size">
+            <option>Single scoop</option><option>Double scoop</option><option>Family tub</option>
+          </select>
+          <button class="btn" type="submit">Reserve</button>
+          <p class="msg" id="msg" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="credit">Designed &amp; built by <strong>Gavan</strong> · © 2026</span>
+    <span>Open daily, 11am to 10pm</span>
+  </div>
+</footer>
+
+<script>
+const flavors = [
+  {n:'Strawberry Cloud', d:'Fresh strawberries folded into sweet cream.', bg:'#FFC9D9', c:'#FF6F9C'},
+  {n:'Pistachio Dream',  d:'Roasted pistachios, a pinch of sea salt.',   bg:'#D5EBC1', c:'#8CC063'},
+  {n:'Blueberry Swirl',  d:'Wild blueberry ribbon in vanilla base.',     bg:'#D9D3FF', c:'#7A6BE8'},
+  {n:'Mango Sunrise',    d:'Alphonso mango, lime zest, nothing else.',   bg:'#FFE7A3', c:'#FFB020'},
+  {n:'Dark Cocoa',       d:'70% cocoa, slow-melted and churned twice.',  bg:'#E5CFC4', c:'#7A4332'}
+];
+const root = document.documentElement.style;
+const grid = document.getElementById('flavorGrid');
+const select = document.getElementById('flavorSelect');
+const current = document.getElementById('current');
+
+flavors.forEach((f, i) => {
+  const b = document.createElement('button');
+  b.className = 'flavor';
+  b.setAttribute('aria-pressed', i === 0);
+  b.style.setProperty('--c', f.c);
+  b.innerHTML = `<span class="dot" style="background:${f.c}"></span><b>${f.n}</b><span class="d">${f.d}</span>`;
+  b.onclick = () => pick(i);
+  grid.appendChild(b);
+  select.add(new Option(f.n, f.n));
+});
+
+function pick(i) {
+  const f = flavors[i];
+  root.setProperty('--bg', f.bg);
+  root.setProperty('--scoop', f.c);
+  current.textContent = f.n;
+  select.selectedIndex = i;
+  [...grid.children].forEach((el, j) => el.setAttribute('aria-pressed', j === i));
+}
+select.onchange = () => pick(select.selectedIndex);
+
+document.getElementById('orderForm').onsubmit = e => {
+  e.preventDefault();
+  const d = new FormData(e.target);
+  document.getElementById('msg').textContent =
+    `Thanks ${d.get('name')}! Your ${d.get('size').toLowerCase()} of ${d.get('flavor')} is reserved.`;
+  e.target.reset(); pick(select.selectedIndex);
+};
+</script>
+</body>
+</html>
